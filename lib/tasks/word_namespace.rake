@@ -24,7 +24,7 @@ namespace :word_namespace do
   desc "Eliminate words that are too short. Qu is treated as one character for the purpose of character count."
   task eliminate_short_words: :environment do
     word_list = create_word_array ENV["input_file"]
-    word_list.select! {|x| boggle_length(x) > 2 }
+    word_list.select! {|x| boggle_length(x) > 3 }
     write_array ENV["output_file"], word_list
   end
 
