@@ -1,1 +1,17 @@
-<h3>Welcome</h3>
+<h1>Boggle</h1>
+<div>
+  <%= form_tag 'visitors/determine_words', :method => "post" do %>
+    <div style = "margin: 0 0 0 0">
+      <% @length.times do |i| %>
+        <div style="float:left; margin: 0 0 0 0; font-size: 1vw; width: 5vw">
+          <% @length.times do |j| %>
+            <%= text_field_tag "(#{i},#{j})".to_sym %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div style="clear:both">
+      <%= submit_tag "Determine Words" %>
+    </div>
+  <% end -%>
+<div>
