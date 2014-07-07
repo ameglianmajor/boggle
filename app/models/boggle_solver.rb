@@ -3,6 +3,7 @@ class BoggleSolver
     @length = input.length
     valid = input.inject( input.length == @length ) { |result, value| result && (value.length == @length) }
     if valid
+      load_words
       @board = input
     else
       raise ArgumentError.new("Valid data was not provided.")
@@ -10,7 +11,6 @@ class BoggleSolver
   end
 
   def find_all_valid_words
-    binding.pry
     @word_list.select {|word| valid_word? word}
   end
 
