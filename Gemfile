@@ -25,7 +25,9 @@ group :development do
   gem 'rb-inotify', :require=>false
 end
 group :development, :test do
+  gem 'byebug'
   gem 'factory_girl_rails'
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rspec-rails'
