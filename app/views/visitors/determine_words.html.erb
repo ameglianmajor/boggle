@@ -1,3 +1,44 @@
-<% @valid_words.each do |word| %>
-  <p><%= word %></p>
-<% end %>
+<div>
+  <h1>Boggle Board</h1>
+  <div style = "margin: 0 0 0 0">
+    <% @length.times do |i| %>
+      <div style="float:left; margin: 0 0 0 0; font-size: 2vw; width: 5vw">
+        <% @length.times do |j| %>
+          <div style="border-style: solid; border-width: 1px; background-color: #fff; padding: 10px">
+            <center><%= @matrix[i][j] %></center>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div style="clear: both">
+  <h1>All Possible Words</h1>
+  <div style="float:left; padding: 10px; margin: 10px;">
+    <ul>
+      <% @valid_words.each do |word| %>
+        <% if (word.length == 4) %>
+          <li><%= word %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <div style="float:left; padding: 10px; margin: 10px;">
+    <ul>
+      <% @valid_words.each do |word| %>
+        <% if (word.length == 5) %>
+          <li><%= word %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <div style="float:left; padding: 10px; margin: 10px;">
+    <ul>
+      <% @valid_words.each do |word| %>
+        <% if (word.length > 5) %>
+          <li><%= word %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>

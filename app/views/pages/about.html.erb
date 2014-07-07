@@ -1,7 +1,10 @@
 <% content_for :title do %>About<% end %>
 <h3>About the Website</h3>
 <p>
-This web application was created with
-<%= link_to('Rails Composer', 'http://railsapps.github.io/rails-composer/') %>
-from the <%= link_to('RailsApps project', 'http://railsapps.github.io/') %>.
+This web application was created to find all possible words contained in a specified Boggle board. To use this application, goto the 'Home' tab and enter the Boggle Board you wish to analyze. The following rules are followed in order to find permissible words.
 </p>
+<ul>
+  <li>A word must contain at least 3 letters. If a word contains the letter 'q', it must contain at least 4 letters.</li>
+  <li>A word containing 'q' must contain the unit 'qu'. Furthermore, 'qu' is treated as one letter.</li>
+  <li>A word can be constructed by moving horizontally, vertically, or diagonally from the previous letter.</li>
+</ul>
