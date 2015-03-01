@@ -12,6 +12,7 @@ gem 'devise'
 gem 'foundation-rails', '~> 5.5.1'
 gem 'high_voltage'
 gem 'pg'
+gem 'apipie-rails'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
