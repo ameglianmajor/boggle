@@ -15,10 +15,10 @@ class VisitorsController < ApplicationController
   EOS
   @board_size.times do |i|
     @board_size.times do |j|
-      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|(Q|q)(U|u))$/, desc: "Single letter unless it is the pair qu."
+      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|(Q|q)(U|u))$/, desc: "Single letter unless it is the pair qu.", required: true
     end
   end
-  error 400, 'Bad Request. Please check that all parameters were provided and that the request is syntactically correct.', required: true
+  error 400, 'Bad Request. Please check that all parameters were provided and that the request is syntactically correct.'
   def determine_words
     # The view expects @length to be set.
     # Thus, the memoized function length must be called at least once in this method.

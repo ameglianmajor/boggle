@@ -19,14 +19,14 @@ RSpec.describe BoggleSolver, :type => :model do
     it "only finds valid words." do
       test_boggle_solver = FactoryGirl.build(:boggle_solver)
       valid_words = ['super', 'turn', 'leo', 'pure', 'kelp', 'nuts']
-      # while the word 'torn' and 'pest' are valid words, they are
+      # While the word 'torn' and 'pest' are valid words, they are
       # not in the dictionary.
       invalid_words = ['torn', 'pest', 'qtzel', 'zelqzu']
       valid_words.each do |word|
-        assert(test_boggle_solver.valid_word? word)
+        assert(test_boggle_solver.instance_eval {valid_word? word})
       end
       invalid_words.each do |word|
-        assert(!(test_boggle_solver.valid_word? word))
+        assert(!(test_boggle_solver.instance_eval {valid_word? word}))
       end
     end
   end
@@ -34,9 +34,16 @@ RSpec.describe BoggleSolver, :type => :model do
   describe "method start_coordinates" do
     it "finds all starting coordinates." do
       test_boggle_solver = FactoryGirl.build(:boggle_solver)
-      assert(test_boggle_solver.start_coordinates 'e' == [[0,0],[1,1]])
-      assert(test_boggle_solver.start_coordinates 'u' == [[2,1]])
-      assert(test_boggle_solver.start_coordinates 'qu' == [])
+      test_hash = {
+        'e' => [[0,0],[1,1]],
+        'u' => [[2,1]],
+        'qu' => [],
+      }
+      test_hash.each do |key, value|
+        assert(test_boggle_solver.instance_eval {
+          start_coordinates key == value
+        })
+      end
     end
   end
 end
