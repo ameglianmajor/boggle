@@ -35,6 +35,7 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   WORD_LIST = 'boggle_word_list.txt'
+  config.board_size = 4
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
