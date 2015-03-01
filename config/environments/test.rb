@@ -34,7 +34,7 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  WORD_LIST = 'boggle_word_list.txt'
+  config.word_list_filename = 'boggle_word_list.txt'
   config.board_size = 4
 
   # Raises error for missing translations

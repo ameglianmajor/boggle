@@ -1,7 +1,7 @@
 class BoggleSolver
-  def initialize input
+  def initialize input, word_list_filepath
     @length = input.length
-    load_words
+    load_words word_list_filepath
     @board = input
   end
 
@@ -72,9 +72,9 @@ class BoggleSolver
     atomic_elements
   end
 
-  def load_words
+  def load_words word_list_filepath
     @word_list = []
-    fh = File.open("#{Rails.root}/dictionary/#{WORD_LIST}")
+    fh = File.open("#{word_list_filepath}")
     while (line = fh.gets)
       @word_list << line
     end

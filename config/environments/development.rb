@@ -49,8 +49,8 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  WORD_LIST = 'boggle_word_list.txt'
-  config.board_size = 4
+  config.word_list_filename = 'boggle_word_list.txt'
+  config.board_size = 5
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

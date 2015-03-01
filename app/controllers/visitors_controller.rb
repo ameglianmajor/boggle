@@ -28,7 +28,7 @@ class VisitorsController < ApplicationController
         @matrix[i][j] = params["(#{i},#{j})"]
       end
     end
-    bs = BoggleSolver.new(@matrix)
+    bs = BoggleSolver.new @matrix, "#{Rails.root}/dictionary/#{Rails.application.config.word_list_filename}"
     @valid_words = bs.find_all_valid_words
   end
 
