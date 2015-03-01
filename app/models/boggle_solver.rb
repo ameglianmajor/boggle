@@ -1,13 +1,8 @@
 class BoggleSolver
   def initialize input
     @length = input.length
-    valid = input.inject( input.length == @length ) { |result, value| result && (value.length == @length) }
-    if valid
-      load_words
-      @board = input
-    else
-      raise ArgumentError.new("Valid data was not provided.")
-    end
+    load_words
+    @board = input
   end
 
   def find_all_valid_words
