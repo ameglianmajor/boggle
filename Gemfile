@@ -34,6 +34,7 @@ end
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'simplecov', require: false
   gem 'faker'
   gem 'launchy'
   gem 'selenium-webdriver'
