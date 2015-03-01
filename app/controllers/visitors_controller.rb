@@ -13,7 +13,7 @@ class VisitorsController < ApplicationController
   EOS
   4.times do |i|
     4.times do |j|
-      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|[Qq][Uu])$/, desc: "Single letter unless it is the pair qu."
+      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|(Q|q)(U|u))$/, desc: "Single letter unless it is the pair qu."
     end
   end
   error 400, 'Bad Request. Please check that all parameters were provided and that the request is syntactically correct.', required: true
