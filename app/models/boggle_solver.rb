@@ -3,82 +3,65 @@ class BoggleSolver
     @length = input.length
     load_words word_list_filepath
     @board = input
+    downcase_board
   end
 
   def find_all_valid_words
     @word_list.select {|word| valid_word? word}
   end
 
+  def downcase_board
+    @board.each {|column| column.map!(&:downcase) }
+  end
+
   def valid_word? word
     atomic_elements = word_array word
-    visit_chains = start_coordinates atomic_elements[0]
-    i = 1
-    while (next_atomic_element = atomic_elements[i])
-      visit_chains.map! {|x| augment_visit_chain(x, next_atomic_element) }
-      visit_chains.flatten!(1)
-      i += 1
-    end
-    visit_chains.empty? ? false : true
+    found_word_chains = atomic_elements[1..-1].
+      inject(start_coordinates atomic_elements[0]) do |visit_chains, atomic_element|
+        return false if visit_chains.empty?
+        visit_chains.map! {|x| augmented_visit_chains(x, atomic_element) }
+        visit_chains.flatten!(1)
+      end
+    found_word_chains.empty? ? false : true
   end
 
   def start_coordinates atomic_string
-    valid_coordinates = []
-    @length.times do |i|
-      @length.times do |j|
-        valid_coordinates << [[i,j]] if @board[i][j] == atomic_string
-      end
-    end
-    valid_coordinates
+    (0..@length-1).collect do |i|
+      (0..@length-1).collect do |j|
+        [[i,j]] if @board[i][j] == atomic_string
+      end.compact # compacting removes nils
+    end.flatten(1) # flatten(1) removes the nesting caused by the double loop
   end
 
-  def augment_visit_chain visit_chain, next_atomic_string
-    possible_visits = valid_neighbors visit_chain
-    matches = possible_visits.select { |x| @board[x[0]][x[1]] == next_atomic_string }
-    return_chains = matches.collect do |x|
-      visit_chain+[x]
-    end
-    return_chains
+  def augmented_visit_chains visit_chain, next_atomic_string
+    possible_visits = unvisited_neighbors visit_chain
+    matching_visits = possible_visits.select { |x| @board[x[0]][x[1]] == next_atomic_string }
+    matching_visits.collect {|match| visit_chain+[match]}
   end
 
-  def valid_neighbors visit_chain
+  def unvisited_neighbors visit_chain
     valid_neighbors = neighbors visit_chain.last
-    visit_chain.map { |x| valid_neighbors.delete(x) }
-    valid_neighbors
+    valid_neighbors - visit_chain
   end
 
   def neighbors coordinates
-    return_values = one_dim_neighbors(coordinates[0]).product(one_dim_neighbors(coordinates[1]))
-    return_values.delete coordinates
-    return_values
+    neighbors_and_self =
+      one_dim_neighbors(coordinates[0]).product(one_dim_neighbors(coordinates[1]))
+    neighbors_and_self - [coordinates]
   end
 
   def one_dim_neighbors n
-    return_values = [n-1, n, n+1]
-    return_values.select {|n| 0 <= n && n < @length}
+    [n-1, n, n+1].select {|n| 0 <= n && n < @length}
   end
 
   def word_array word
-    length = word.length - 1
-    atomic_elements = []
-    length.times do |i|
-      if word[i] == 'q'
-        atomic_elements << 'qu'
-      else
-        if i == 0 || word[i-1] != 'q'
-          atomic_elements << word[i]
-        end
-      end
-    end
-    atomic_elements
+    # (?<!q) is a look behind regexp operation
+    word.scan(/(?<!q)u|qu|[a-pr-tv-z]/)
   end
 
   def load_words word_list_filepath
-    @word_list = []
-    fh = File.open("#{word_list_filepath}")
-    while (line = fh.gets)
-      @word_list << line
-    end
-    fh.close
+    file_handle = File.open("#{word_list_filepath}", 'r')
+    @word_list = file_handle.collect { |file| file.strip.downcase }
+    file_handle.close
   end
-
 end
