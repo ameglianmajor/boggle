@@ -15,6 +15,12 @@ RSpec.describe BoggleSolver, :type => :model do
     end
   end
 
+  # This test and the next tests the private interface of BoggleSolver. Typically,
+  # maintaining specs of the private interface is not regarded as cost
+  # effective. However, these tests were put in place since this functionality is a
+  # core portion of this application. If these tests becomes problematic to
+  # maintain through refactoring, they can be deleted since they are covered
+  # by the spec, which finds all valid words.
   describe "method valid_word?" do
     it "only finds valid words." do
       test_boggle_solver = FactoryGirl.build(:boggle_solver)
