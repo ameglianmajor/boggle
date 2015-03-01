@@ -6,6 +6,12 @@ class BoggleSolver
     downcase_board
   end
 
+  # For a fixed board size, this algorithm is typically O(N), where N is the number of
+  # words in the dictionary. This assumes that the strings being searched for
+  # are words in the English language. Since the longest word is 32 letters,
+  # the word length can be treated as a constant from a computational
+  # complexity perspective. Branching of visit_chains also needs to be considered
+  # for worst case analysis, but branching is not a consideration in most cases.
   def find_all_valid_words
     @word_list.select {|word| valid_word? word}
   end
@@ -36,7 +42,7 @@ class BoggleSolver
   def augmented_visit_chains visit_chain, next_atomic_string
     possible_visits = unvisited_neighbors visit_chain
     matching_visits = possible_visits.select { |x| @board[x[0]][x[1]] == next_atomic_string }
-    matching_visits.collect {|match| visit_chain+[match]}
+    matching_visits.map {|match| visit_chain+[match]}
   end
 
   def unvisited_neighbors visit_chain
