@@ -1,3 +1,5 @@
+# This controller handles requests by visitors to the main boggle solver
+# page.
 class VisitorsController < ApplicationController
   @board_size = Rails.application.config.board_size
 
@@ -9,37 +11,51 @@ class VisitorsController < ApplicationController
     length
   end
 
-  api :POST, 'visitors/determine_words', 'Post a 2d array of letters and obtain a list of valid words.'
+  api :POST,
+      'visitors/determine_words',
+      'Post a 2d array of letters and obtain a list of valid words.'
   description <<-EOS
-  This endpoint is used to obtain a list of valid words found in the 2d array of letters that are sent.
+    This endpoint is used to obtain a list of valid words found
+    in the 2d array of letters that are sent.
   EOS
   @board_size.times do |i|
     @board_size.times do |j|
-      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|(Q|q)(U|u))$/, desc: "Single letter unless it is the pair qu.", required: true
+      param "(#{i},#{j})".to_sym, /^([A-PR-Za-pr-z]|(Q|q)(U|u))$/,
+            desc: 'Single letter unless it is the pair qu.', required: true
     end
   end
-  error 400, 'Bad Request. Please check that all parameters were provided and that the request is syntactically correct.'
+  error 400,
+        'Bad Request. Please check that all parameters were provided and '\
+        'that the request is syntactically correct.'
   def determine_words
-    # The view expects @length to be set.
-    # Thus, the memoized function length must be called at least once in this method.
+    # The view expects @length to be set. Thus, the memoized function
+    # length must be called at least once in this method.
     @matrix = self.class.two_dim_table length
     length.times do |i|
       length.times do |j|
         @matrix[i][j] = params["(#{i},#{j})"]
       end
     end
-    bs = BoggleSolver.new @matrix, "#{Rails.root}/dictionary/#{Rails.application.config.word_list_filename}"
-    @valid_words = bs.find_all_valid_words
+    @valid_words = valid_words
   end
 
-    private
+  private
 
-    def length
-      @length ||= Rails.application.config.board_size
-    end
+  def valid_words
+    bs = BoggleSolver.new @matrix, file_path
+    bs.find_all_valid_words
+  end
 
-    def self.two_dim_table size
-      Array.new(size).inject([]) { |initial, increment| initial.push(Array.new(size)) }
-    end
+  def file_path
+    @file_name ||= Rails.application.config.word_list_filename
+    @file_path ||= "#{Rails.root}/dictionary/#{file_name}"
+  end
 
+  def length
+    @length ||= Rails.application.config.board_size
+  end
+
+  def self.two_dim_table(size)
+    Array.new(size).inject([]) { |a, _e| a.push(Array.new(size)) }
+  end
 end
